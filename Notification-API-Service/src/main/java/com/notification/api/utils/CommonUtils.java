@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.util.ObjectUtils;
 
+import com.notification.api.models.context.NotificationContextHolder;
+
 public final class CommonUtils {
 	
 	private static final Calendar calendar=Calendar.getInstance();
@@ -26,6 +28,12 @@ public final class CommonUtils {
 	public static UUID generateUUID()
 	{
 		return UUID.randomUUID();
+	}
+
+
+
+	public static String getCurrentTenantId() {
+		return NotificationContextHolder.getContext().tenantId();
 	}
 	
 }
