@@ -10,6 +10,7 @@ import com.notification.api.models.context.NotificationContext;
 import com.notification.api.models.context.NotificationContextHolder;
 import com.notification.api.models.entity.Template;
 import com.notification.api.models.request.CreateTemplateRequest;
+import com.notification.api.models.request.TemplateFilterRequest;
 import com.notification.api.models.response.TemplateResponse;
 import com.notification.api.services.interfaces.TemplateService;
 import com.notification.api.utils.CommonUtils;
@@ -30,9 +31,9 @@ class TemplateServiceImpl implements TemplateService {
 	@Override
 	public TemplateResponse createTemplate(CreateTemplateRequest request) {
 		
-		NotificationContext context =NotificationContextHolder.getContext();
+	//	NotificationContext context =NotificationContextHolder.getContext();
 		
-		templateDao.findByTenantIdAndName(context.tenantId(), request.getName()).ifPresent(tenant -> 
+		templateDao.findByTenantIdAndName(CommonUtils.getCurrentTenantId(), request.getName()).ifPresent(tenant -> 
 		{
 			throw new ValidationException(TEMPLATE_ALREADY_EXISTS_ERROR,HttpStatus.BAD_REQUEST.value());
 		});
@@ -40,11 +41,16 @@ class TemplateServiceImpl implements TemplateService {
 		
 		Template template=new Template();
 		template.setId(CommonUtils.generateUUID());
-		template.setTenantId(UUID.fromString(context.tenantId()));
+		template.setTenantId(UUID.fromString(CommonUtils.getCurrentTenantId()));
 		BeanUtils.copyProperties(request, template);
 		template.entityCreated();
 		templateDao.save(template);
 		return new TemplateResponse(template);
+	}
+
+	@Override
+	public Object filterTemplate(TemplateFilterRequest request) {
+		return templateDao.filterTemplate(request.buildSearch(),request.buildPageRequest());
 	}
 	
 

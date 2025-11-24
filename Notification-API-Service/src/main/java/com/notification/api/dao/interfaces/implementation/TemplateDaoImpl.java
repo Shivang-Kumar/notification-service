@@ -3,6 +3,9 @@ package com.notification.api.dao.interfaces.implementation;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.notification.api.dao.interfaces.TemplateDao;
@@ -28,6 +31,12 @@ class TemplateDaoImpl implements TemplateDao{
 	@Override
 	public void save(Template template) {
 		 templateRepository.save(template);	
+	}
+
+	@Override
+	public Page<Template> filterTemplate(Example<Template> example, PageRequest pageRequest) {
+		Page<Template> template=templateRepository.findAll(example,pageRequest);
+		return template;
 	}
 	
 }
