@@ -1,5 +1,6 @@
 package com.notification.api.models.context;
 
-public record NotificationContext(String tenantId) {
+public record NotificationContext(String tenantId,boolean ignoreTenantIdInjection) {
+
 
 }
