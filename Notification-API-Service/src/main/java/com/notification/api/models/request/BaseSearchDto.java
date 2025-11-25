@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
 import com.notification.api.exception.ValidationException;
+import com.notification.api.models.context.NotificationContextHolder;
 import com.notification.api.utils.CommonUtils;
 
 public abstract class BaseSearchDto<T>{
@@ -74,7 +75,11 @@ public abstract class BaseSearchDto<T>{
 	
 	private void injectTenantId(Object instance) {
 		
-		
+		if(NotificationContextHolder.getContext().ignoreTenantIdInjection())
+		{
+			System.out.println("Ignoring tenant Id injection");
+			return;
+		}
 		try {
 			Field tenantIdField=getField(instance.getClass(),"tenantId");
 			tenantIdField.setAccessible(true);
@@ -92,7 +97,7 @@ public abstract class BaseSearchDto<T>{
 		while(current != null)
 		{
 			try {
-				return current.getField(name);
+				return current.getDeclaredField(name);
 			}
 			catch(NoSuchFieldException e)
 			{
