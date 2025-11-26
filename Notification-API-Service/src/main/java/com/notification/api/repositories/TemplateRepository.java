@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.notification.api.models.entity.Template;
 @Repository
-public interface TemplateRepository extends MongoRepository<Template, UUID>{
-  Optional<Template> findByNameIgnoreCaseAndTenantId(String name,UUID templateId);
+public interface TemplateRepository extends MongoRepository<Template, String>{
+  Optional<Template> findByNameIgnoreCaseAndTenantId(String name,String templateId);
+
+Optional<Template> findByIdAndTenantId(String id, String tenantId);
 }

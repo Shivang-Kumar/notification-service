@@ -16,4 +16,8 @@ public interface TemplateDao {
 
 	Page<Template> filterTemplate(Example<Template> search, PageRequest pageRequest);
 
+	Optional<Template> findByTenantIdAndId(String tenantId, String id);
+
+	void deleteTemplateById(String id);
+
 }

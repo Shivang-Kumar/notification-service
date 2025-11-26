@@ -25,9 +25,9 @@ public final class CommonUtils {
 		return ObjectUtils.isEmpty(input);
 	}
 	
-	public static UUID generateUUID()
+	public static String generateUUID()
 	{
-		return UUID.randomUUID();
+		return UUID.randomUUID().toString();
 	}
 
 
