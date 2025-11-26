@@ -25,7 +25,13 @@ class TemplateDaoImpl implements TemplateDao{
 	private final TemplateRepository templateRepository;
 	@Override
 	public Optional<Template> findByTenantIdAndName(String tenantId,String templateName) {
-		return templateRepository.findByNameIgnoreCaseAndTenantId(templateName, UUID.fromString(tenantId));
+		return templateRepository.findByNameIgnoreCaseAndTenantId(templateName,tenantId);
+	}
+	
+	@Override
+	public Optional<Template> findByTenantIdAndId(String tenantId,String id)
+	{
+		return templateRepository.findByIdAndTenantId(id,tenantId);
 	}
 	
 	@Override
@@ -37,6 +43,12 @@ class TemplateDaoImpl implements TemplateDao{
 	public Page<Template> filterTemplate(Example<Template> example, PageRequest pageRequest) {
 		Page<Template> template=templateRepository.findAll(example,pageRequest);
 		return template;
+	}
+
+	@Override
+	public void deleteTemplateById(String id) {
+			templateRepository.deleteById(id);
+			
 	}
 	
 }
