@@ -2,10 +2,12 @@ package com.notification.api.filters;
 
 import java.io.IOException;
 
+import org.jboss.logging.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.notification.api.constants.ApplicationConstants;
 import com.notification.api.models.context.NotificationContext;
 import com.notification.api.models.context.NotificationContextHolder;
 import com.notification.api.utils.CommonUtils;
@@ -30,7 +32,12 @@ class NotificationAuthFilter extends OncePerRequestFilter{
 			{
 				response.setStatus(HttpStatus.UNAUTHORIZED.value());
 				response.getWriter().write("Unauthorized! API key is Required");
+				return;
 			}
+			
+			String requestId=CommonUtils.generateUUID();
+			MDC.put(ApplicationConstants.X_REQUEST_ID, requestId);
+			response.setHeader(ApplicationConstants.X_REQUEST_ID, requestId);	
 			NotificationContextHolder.setContext(new NotificationContext(xTenantId,false));
 		}
 		filterChain.doFilter(request, response);
@@ -38,6 +45,7 @@ class NotificationAuthFilter extends OncePerRequestFilter{
 		if(isValidApi(request.getRequestURI()))
 		{
 			NotificationContextHolder.clear();
+			MDC.clear();
 			
 		}
 		
