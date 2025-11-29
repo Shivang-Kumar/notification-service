@@ -1,0 +1,22 @@
+Notification API
+
+A simple API for sending and managing notifications.
+
+Definition
+
+The Notification API provides endpoints to create notifications, deliver them through various channels, and track their status.
+It is designed to be implementation-agnostic, allowing any backend, protocol, or storage system.
+
+Core Concepts
+
+Notification – A message intended for a recipient.
+
+Channel – The delivery medium (e.g., email, SMS, push, etc.).
+
+Status – The lifecycle state of a notification (queued, sent, delivered, failed).
+
+Basic Endpoints
+
+POST /notifications – Create and send a notification.
+
+GET /notifications/{id} – Retrieve notification status
