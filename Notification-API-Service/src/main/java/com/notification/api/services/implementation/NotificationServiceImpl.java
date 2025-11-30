@@ -11,6 +11,7 @@ import com.notification.api.exception.ValidationException;
 import com.notification.api.models.entity.Template;
 import com.notification.api.models.request.IngestTopicDto;
 import com.notification.api.models.request.SendNotificationRequest;
+import com.notification.api.pubsub.pubsub.publisher.GenericPublisher;
 import com.notification.api.services.interfaces.NotificationService;
 import com.notification.api.utils.CommonUtils;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements  NotificationService{
 
 	private TemplateDao templateDao;
+	private GenericPublisher genericPublisher;
 	
 	@Override
 	public void sendNotification(SendNotificationRequest request)
@@ -32,6 +34,9 @@ public class NotificationServiceImpl implements  NotificationService{
 	  if(byTenantIdAndId.isEmpty())
 	  {
 		  //Todo send to audit topic
+		  
+		 // genericPublisher.sendDataToAudit(byTenantIdAndId);
+
 		  throw new ValidationException(ErrorConstants.TEMPLATE_NOT_EXISTS_WITH_ID_ERROR,HttpStatus.BAD_REQUEST.value());
 	  }
 	  
@@ -44,6 +49,9 @@ public class NotificationServiceImpl implements  NotificationService{
 	  ingestTopicDto.setTemplateId(request.getTemplateId());
 	  ingestTopicDto.setDynamicVariables(request.getDynamicVariables());
 	  ingestTopicDto.setNotificationType(request.getNotifocationType());
+	  
+	  genericPublisher.sendDataToIngest(ingestTopicDto);
+	  
 
 
 	  
