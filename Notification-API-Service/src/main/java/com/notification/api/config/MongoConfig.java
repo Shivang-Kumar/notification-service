@@ -4,7 +4,10 @@ package com.notification.api.config;
 	import com.mongodb.MongoClientSettings;
 	import com.mongodb.client.MongoClient;
 	import com.mongodb.client.MongoClients;
-	import org.bson.UuidRepresentation;
+
+import java.util.concurrent.TimeUnit;
+
+import org.bson.UuidRepresentation;
 	import org.springframework.context.annotation.Bean;
 	import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +23,8 @@ package com.notification.api.config;
 	        MongoClientSettings settings = MongoClientSettings.builder()
 	                .applyConnectionString(connectionString)
 	                .uuidRepresentation(UuidRepresentation.STANDARD)
+	                .applyToSocketSettings(builder -> builder.connectTimeout(5, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS))
+	        		.applyToClusterSettings(builder -> builder.serverSelectionTimeout(5, TimeUnit.SECONDS))
 	                .build();
 
 	        return MongoClients.create(settings);

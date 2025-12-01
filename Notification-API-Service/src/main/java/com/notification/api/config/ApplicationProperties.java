@@ -17,5 +17,8 @@ public class ApplicationProperties {
 	@Value("${kafka.ingest.topic}")
 	private String ingestTopic;
 	
+	
+	@Value("${spring.kafka.bootstrap-servers}")
+	private String bootStrapKakfaServers;
 
 }
