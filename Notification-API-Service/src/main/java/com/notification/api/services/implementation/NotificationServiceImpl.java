@@ -1,5 +1,6 @@
 package com.notification.api.services.implementation;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,17 @@ public class NotificationServiceImpl implements  NotificationService{
 
 		  throw new ValidationException(ErrorConstants.TEMPLATE_NOT_EXISTS_WITH_ID_ERROR,HttpStatus.BAD_REQUEST.value());
 	  }
+	  
+	  
+	  byTenantIdAndId.ifPresent(template -> {
+		  
+		  Map<String,Object> requestDynamicVariables=request.getDynamicVariables();
+		  if(template.getTemplateVariables().size()!=request.getDynamicVariables().size()
+				  || template.getTemplateVariables().values().stream().anyMatch(variable -> ! requestDynamicVariables.containsKey(variable)))
+				  {
+			  throw new ValidationException("Invalid Dynamic Varibales");
+		  }
+	  });
 	  
 	 
 	  
