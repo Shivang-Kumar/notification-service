@@ -8,4 +8,9 @@ public interface ErrorConstants {
 	String PUT_CACHING_ERROR="Error while caching data";
     String TEMPLATE_REDIS_PREFIX="templates.";
 	String CACHE_PARSING_ERROR = "Error while parsing Cache data";
+	String TEMPLATE_VARIABLE_ERROR="Template Variables is required! And max Size should be 20";
+	String TEMPLATE_NAME_ERROR ="Template Name should be less than 100";
+	String TEMPLATE_MESSAGE_ERROR = "Max Message Template Length Should be 10000";
+	String NOTIFICATION_TYPE_VARIABLE_ERROR="Notification type is mandatory";
+	String SEND_NOTIFICATION_DYNAMIC_VARIABLE_ERROR = "Dynamic Template Variables is required!";
 }
