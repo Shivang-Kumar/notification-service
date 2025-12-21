@@ -60,6 +60,13 @@
     <artifactId>spring-boot-starter-data-redis</artifactId>
 </dependency>
 
+<dependency>
+    <groupId>com.common.sdk</groupId>
+    <artifactId>Common-SDK</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
