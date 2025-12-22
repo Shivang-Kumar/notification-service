@@ -35,9 +35,9 @@ class NotificationAuthFilter extends OncePerRequestFilter{
 				return;
 			}
 			
-			String requestId=CommonUtils.generateUUID();
-			MDC.put(ApplicationConstants.X_REQUEST_ID, requestId);
-			response.setHeader(ApplicationConstants.X_REQUEST_ID, requestId);	
+//			String requestId=CommonUtils.generateUUID();
+//			MDC.put(ApplicationConstants.X_REQUEST_ID, requestId);
+//			response.setHeader(ApplicationConstants.X_REQUEST_ID, requestId);	
 			NotificationContextHolder.setContext(new NotificationContext(xTenantId,false));
 		}
 		filterChain.doFilter(request, response);
@@ -45,8 +45,8 @@ class NotificationAuthFilter extends OncePerRequestFilter{
 		if(isValidApi(request.getRequestURI()))
 		{
 			NotificationContextHolder.clear();
-			MDC.clear();
-			
+//			MDC.clear();
+//			
 		}
 		
 	}

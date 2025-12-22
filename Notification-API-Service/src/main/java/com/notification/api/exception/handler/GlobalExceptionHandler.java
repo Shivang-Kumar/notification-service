@@ -12,7 +12,10 @@ import com.notification.api.exception.ResourceNotFoundException;
 import com.notification.api.exception.ValidationException;
 import com.notification.api.utils.CommonUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(ValidationException.class)
