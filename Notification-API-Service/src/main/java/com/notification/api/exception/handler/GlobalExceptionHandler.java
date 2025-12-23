@@ -1,12 +1,17 @@
 package com.notification.api.exception.handler;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.common.sdk.models.enums.APIResponseCode;
+import com.common.sdk.models.interfaces.GenericApiResponse;
+import com.common.sdk.services.ResponseHandler;
 import com.notification.api.exception.AbstractException;
 import com.notification.api.exception.ResourceNotFoundException;
 import com.notification.api.exception.ValidationException;
@@ -18,21 +23,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 	
-	@ExceptionHandler(ValidationException.class)
-   public ResponseEntity<String> handleValidationException(ValidationException exception){
-		return genericExceptionHandler(exception, ()->{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getErrorMessage());
-		});
-		
-   }  
-	@ExceptionHandler(ResourceNotFoundException.class)
-	   public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException exception){
-
-		return genericExceptionHandler(exception, ()->{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getErrorMessage());
-		});
 	
-		
+	private final ResponseHandler responseHandler;
+	
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ValidationException.class)
+   public GenericApiResponse<Void> handleValidationException(ValidationException exception){
+		return responseHandler.failure(Objects.requireNonNullElse(exception.getStatusCode(),APIResponseCode.BAD_REQUEST.getCode()),exception.getMessage());
+   }  
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(ResourceNotFoundException.class)
+	   public GenericApiResponse<Void> handleResourceNotFoundException(ResourceNotFoundException exception){
+
+		return responseHandler.failure(Objects.requireNonNullElse(exception.getStatusCode(),APIResponseCode.BAD_REQUEST.getCode()),exception.getMessage());	
 	}
 	
 	public ResponseEntity<String> genericExceptionHandler(AbstractException exception, Supplier<ResponseEntity<String>> runner)
